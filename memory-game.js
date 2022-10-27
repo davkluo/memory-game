@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 /** Memory game: find matching pairs of cards and flip both of them. */
 
 const FOUND_MATCH_WAIT_MSECS = 1000;
 const COLORS = [
-  "red", "blue", "green", "orange", "purple",
-  "red", "blue", "green", "orange", "purple",
+  'red', 'blue', 'green', 'orange', 'purple',
+  'red', 'blue', 'green', 'orange', 'purple',
 ];
 
 const colors = shuffle(COLORS);
@@ -39,10 +39,13 @@ function shuffle(items) {
  */
 
 function createCards(colors) {
-  const gameBoard = document.getElementById("game");
+  const gameBoard = document.getElementById('game');
 
   for (let color of colors) {
-    // missing code here ...
+    let newCard = document.createElement('div');
+    newCard.className = color;
+    newCard.addEventListener('click', handleCardClick);
+    gameBoard.appendChild(newCard);
   }
 }
 
