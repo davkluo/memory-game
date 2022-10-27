@@ -12,6 +12,10 @@ const colors = shuffle(COLORS);
 
 createCards(colors);
 
+let cardsRevealed = 0;
+let firstCard;
+let firstColor;
+
 
 /** Shuffle array items in-place and return shuffled array. */
 
@@ -52,17 +56,52 @@ function createCards(colors) {
 /** Flip a card face-up. */
 
 function flipCard(card) {
-  // ... you need to write this ...
+  cardsRevealed++;
+  card.style.backgroundColor = card.className;
 }
 
 /** Flip a card face-down. */
 
 function unFlipCard(card) {
-  // ... you need to write this ...
+  cardsRevealed--;
+  card.style.backgroundColor = '';
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 function handleCardClick(evt) {
-  // ... you need to write this ...
+  let clickedCard = evt.target;
+
+  // Guard against revealing more than 2 cards at a time
+  if (cardsRevealed >= 2) {
+    return;
+  }
+
+  // Guard against clicking a face-up card
+  if (COLORS.indexOf(clickedCard.style.backgroundColor) >= 0) {
+    return;
+  }
+
+  // Flip over the clicked card and increment the cardsRevealed counter
+  flipCard(clickedCard);
+
+  // If it is the first card, save the card and its color and mark firstClick as false
+  if (cardsRevealed === 1) {
+    firstCard = clickedCard;
+    firstColor = clickedCard.className;
+  }
+  // If it is the second card, compare its color to firstColor and decide
+  // if the cards should stay face-up or be flipped face-down
+  else if (cardsRevealed === 2) {
+    if (clickedCard.className === firstColor) {
+      cardsRevealed -= 2;
+    } else {
+      let firstCardTimer = setTimeout(unFlipCard, FOUND_MATCH_WAIT_MSECS, firstCard);
+      let secondCardTimer = setTimeout(unFlipCard, FOUND_MATCH_WAIT_MSECS, clickedCard);
+    }
+
+    // Reset flags
+    firstCard = undefined;
+    firstColor = undefined;
+  }
 }
