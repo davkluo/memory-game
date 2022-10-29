@@ -1,13 +1,80 @@
 /* you can add to or change this. */
 
-/* #game div {
-  border: 3px solid black;
-  border-radius: 20px;
-  width: 100px;
-  height: 100px;
-  margin: 20px;
-  display: inline-block;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  background-color: blanchedalmond;
+  z-index: 1;
+  font-family: 'Cabin', sans-serif;
+}
+
+.game-title {
+  font-family: 'Pacifico', cursive;
+  font-size: 8rem;
+  text-align: center;
+  color: white;
+  -webkit-text-stroke: 1px rgb(204, 227, 236);
+  cursor: default;
+}
+
+.best-score {
+  font-family: 'Paytone One', sans-serif;
+  font-size: 1.5rem;
+  color: rgb(204, 227, 236);
+}
+
+#startPageControls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 2rem;
+  perspective: 100px;
+}
+
+/* #startPageControls label {
+  color: white;
+  background-color: rgb(204, 227, 236);
 } */
+
+/* .menu input {
+  display: inline-flex;
+  width: 60px;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+} */
+
+#startPageControls button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  background-color: rgb(204, 227, 236);
+  border: none;
+  color: white;
+  transition: box-shadow .25s ease;
+}
+
+#startPageControls button:hover {
+  box-shadow: 2px 2px 20px rgb(215, 198, 173);
+}
+
+#startPageControls .play-btn-icon {
+  transform: translate(8%, 0);
+}
 
 .card-space {
   display: inline-block;

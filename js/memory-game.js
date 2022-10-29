@@ -3,11 +3,14 @@
 /** Memory game: find matching pairs of cards and flip both of them. */
 
 const FOUND_MATCH_WAIT_MSECS = 1000;
-
-let numPairs = 5;
 const COLORS_PER_PATTERN = 2;
-let cardPatterns = shuffle(createPatterns(numPairs));
+let numPairs = 16;
 
+document.addEventListener('DOMContentLoaded', function() {
+  loadStartPage();
+})
+
+let cardPatterns = shuffle(createPatterns(numPairs));
 createCards(cardPatterns);
 
 let cardsRevealed = 0;
@@ -15,6 +18,16 @@ let cardsMatched = 0;
 let score = 0;
 let firstCard;
 let firstPattern;
+
+function loadStartPage() {
+  let playBtn = document.querySelector('#startPage .play-btn');
+  playBtn.addEventListener('click', startGame);
+}
+
+function startGame() {
+  let startPage = document.getElementById('startPage');
+  startPage.style.visibility = 'hidden';
+}
 
 /** Randomly generate gradient patterns for the cards (each will appear twice):
  *

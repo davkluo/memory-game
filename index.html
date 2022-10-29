@@ -1,18 +1,39 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
-  <meta charset='UTF-8'/>
+  <meta charset='UTF-8' />
   <title>Memory Game!</title>
-  <link rel='stylesheet' href='css/normalize.css'>
-  <link rel='stylesheet' href='css/memory-game.css'/>
+  <link href='css/normalize.css' rel='stylesheet'>
+  <link href='css/memory-game.css' rel='stylesheet' />
+  <link href="//fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cabin&family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cabin:ital@0;1&family=Pacifico&family=Paytone+One&display=swap" rel="stylesheet">
+  <script src="//kit.fontawesome.com/31bb58186a.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
+  <div class='menu' id='startPage'>
+    <h1 class='game-title'>memory match</h1>
 
-<h1>Memory Game!</h1>
+    <span class='best-score'>BEST SCORE:</span>
 
-<div id='game'></div>
+    <div id='startPageControls'>
+      <!-- <label for='numPairsInput'>Pairs:</label>
+      <input id='numPairsInput' type='number' value='8'> -->
+      <button class='play-btn'>
+        <i class='play-btn-icon fa-solid fa-play'></i>
+      </button>
+      <button class='settings-btn'>
+        <i class='fa-solid fa-gear'></i>
+      </button>
+    </div>
+  </div>
 
-<script src='js/memory-game.js'></script>
+  <div id='game'></div>
+
+  <script src='js/memory-game.js'></script>
 
 </body>
+
 </html>
