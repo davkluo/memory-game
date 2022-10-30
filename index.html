@@ -31,27 +31,40 @@
     </div>
 
     <div class='settings-menu menu-hidden'>
-      <div id='numCardsLabel'>Cards:</div>
-      <div id='subtractCardsBtn'>
-        <i class="fa-solid fa-circle-minus"></i>
+      <div id='numCardsLabel'>CARDS:</div>
+      <div class='subtract-cards' id='subtractCardsBtn'>
+        <i class='subtract-cards fa-solid fa-circle-minus'></i>
       </div>
       <div id='numCards'></div>
-      <div id='addCardsBtn'>
-        <i class="fa-solid fa-circle-plus"></i>
+      <div class='add-cards' id='addCardsBtn'>
+        <i class='add-cards fa-solid fa-circle-plus'></i>
       </div>
     </div>
 
   </div>
 
+  <div id='winScreen'>
+    <div class='game-title'>You Win!</div>
+    <div id='winMsg'></div>
+    <button id='replayBtn'>
+      PLAY AGAIN
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+  </div>
+
   <div id='gameWrapper'>
-    <div>
+    <!-- <div class='game-title'>memory match</div> -->
+    <div class='best-score'>
       Best Score:
       <div id='gameBestScore'></div>
+      &nbsp;
       Current Score:
       <div id='currentScore'></div>
     </div>
     <div id='game'></div>
   </div>
+
+
 
   <script src='js/memory-game.js'></script>
 

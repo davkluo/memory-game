@@ -6,10 +6,8 @@
 }
 
 body {
-  background-color: white;
+  background-color: blanchedalmond;
 }
-
-
 
 .menu {
   display: flex;
@@ -22,6 +20,7 @@ body {
   background-color: blanchedalmond;
   z-index: 1;
   gap: 30px;
+  cursor: default;
 }
 
 .game-title {
@@ -32,6 +31,7 @@ body {
   -webkit-text-stroke: 5px rgb(204, 227, 236);
   cursor: default;
 }
+
 
 .best-score, .settings-menu {
   font-family: 'Paytone One', sans-serif;
@@ -168,6 +168,8 @@ body {
   position: relative;
   transition: transform .5s;
   transform-style: preserve-3d;
+  background-color: white;
+  border-radius: 20px;
 }
 
 .card-face {
@@ -175,10 +177,10 @@ body {
   height: 100%;
   width: 100%;
   backface-visibility: hidden;
-  border-radius: 20px;
+  border-radius: inherit;
   border: 6px solid white;
-
-  box-shadow: 0 0 5px rgb(210, 210, 210);
+  box-shadow: 0 0 5px rgb(215, 198, 173);
+  box-sizing: border-box;
 }
 
 .card-front {
@@ -200,4 +202,17 @@ body {
 
 .card.flipped-over {
   transform: rotateY(180deg);
+}
+
+#winScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 1;
+  visibility: hidden;
+  background-color: blanchedalmond;
 }

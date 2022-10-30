@@ -7,15 +7,21 @@ const COLORS_PER_PATTERN = 2;
 const MIN_CARDS = 8;
 const MAX_CARDS = 100;
 
+const startBestScoreText = document.getElementById('startBestScore');
 const playBtn = document.getElementById('playBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsMenu = document.querySelector('.settings-menu');
 const subtractCardsBtn = document.getElementById('subtractCardsBtn');
 const addCardsBtn = document.getElementById('addCardsBtn');
 const numCardsText = document.getElementById('numCards');
+
+const gameBoard = document.getElementById('game');
 const currentScoreText = document.getElementById('currentScore');
-const startBestScoreText = document.getElementById('startBestScore');
 const gameBestScoreText = document.getElementById('gameBestScore');
+
+const winScreen = document.getElementById('winScreen');
+const winMsgText = document.getElementById('winMsg');
+const replayBtn = document.getElementById('replayBtn');
 
 let bestScores = {};
 let bestScore;
@@ -27,24 +33,23 @@ let firstCard;
 let firstPattern;
 
 document.addEventListener('DOMContentLoaded', function () {
+  loadBestScore();
   loadStartPage();
 });
 
 function loadStartPage() {
-  loadBestScore();
   numCardsText.innerText = numPairs * 2;
   currentScoreText.innerText = score;
   playBtn.addEventListener('click', startGame);
   settingsBtn.addEventListener('click', toggleSettings);
-  subtractCardsBtn.addEventListener('click', decreasenumCards);
-  addCardsBtn.addEventListener('click', increasenumCards);
+  subtractCardsBtn.addEventListener('click', changeNumCards);
+  addCardsBtn.addEventListener('click', changeNumCards);
 }
 
 function loadBestScore() {
   if (localStorage.getItem('leaderboard')) {
     bestScores = JSON.parse(localStorage.getItem('leaderboard'));
   }
-
   updateBestScore();
 }
 
@@ -54,26 +59,24 @@ function updateBestScore() {
   } else {
     bestScore = undefined;
   }
-
   startBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
   gameBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
 }
 
-function incrementScore() {
-  score++;
+function updateScore(num) {
+  score = num;
   currentScoreText.innerText = score;
 }
 
-function decreasenumCards(evt) {
-  let prevnumCards = parseInt(numCardsText.innerText);
-  numCardsText.innerText = Math.max(prevnumCards - 4, MIN_CARDS);
-  numPairs = parseInt(numCardsText.innerText) / 2;
-  updateBestScore();
-}
+function changeNumCards(evt) {
+  let prevNumCards = parseInt(numCardsText.innerText);
 
-function increasenumCards(evt) {
-  let prevnumCards = parseInt(numCardsText.innerText);
-  numCardsText.innerText = Math.min(prevnumCards + 4, MAX_CARDS);
+  if (evt.target.classList.contains('subtract-cards')) {
+    numCardsText.innerText = Math.max(prevNumCards - 4, MIN_CARDS);
+  } else if (evt.target.classList.contains('add-cards')) {
+    numCardsText.innerText = Math.min(prevNumCards + 4, MAX_CARDS);
+  }
+
   numPairs = parseInt(numCardsText.innerText) / 2;
   updateBestScore();
 }
@@ -143,8 +146,6 @@ function shuffle(items) {
  */
 
 function createCards(cardPatterns) {
-  const gameBoard = document.getElementById('game');
-
   for (let pattern of cardPatterns) {
     let newCardSpace = document.createElement('div');
     newCardSpace.className = 'card-space';
@@ -199,7 +200,15 @@ function checkForWin(evt) {
       alert('new high score');
       storeBestScore();
     }
+
+    //Show win screen
+    displayWinScreen();
   }
+}
+
+function displayWinScreen() {
+  winScreen.style.visibility = 'visible';
+  replayBtn.addEventListener('click', restartGame);
 }
 
 function storeBestScore() {
@@ -207,10 +216,27 @@ function storeBestScore() {
   localStorage.setItem('leaderboard', JSON.stringify(bestScores));
 }
 
+function restartGame() {
+  while (gameBoard.firstChild) {
+    gameBoard.lastChild.remove();
+  }
+
+  winScreen.style.visibility = 'hidden';
+
+  loadBestScore();
+  updateScore(0);
+  cardsRevealed = 0;
+  cardsMatched = 0;
+  firstCard = undefined;
+  firstPattern = undefined;
+
+  let cardPatterns = shuffle(createPatterns(numPairs));
+  createCards(cardPatterns);
+}
+
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 function handleCardClick(evt) {
-  console.log(cardsRevealed);
   // Guard against revealing more than 2 cards at a time
   if (cardsRevealed >= 2) {
     return;
@@ -241,7 +267,7 @@ function handleCardClick(evt) {
   // If it is the second card, compare its color to firstPattern and decide
   // if the cards should stay face-up or be flipped face-down
   else if (cardsRevealed === 2) {
-    incrementScore();
+    updateScore(score + 1);
     if (clickedCardBack.style.backgroundImage === firstPattern) {
       cardsRevealed -= 2;
       cardsMatched += 2;
