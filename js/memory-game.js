@@ -4,29 +4,90 @@
 
 const FOUND_MATCH_WAIT_MSECS = 1000;
 const COLORS_PER_PATTERN = 2;
-let numPairs = 16;
+const MIN_CARDS = 8;
+const MAX_CARDS = 100;
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadStartPage();
-})
+const playBtn = document.getElementById('playBtn');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsMenu = document.querySelector('.settings-menu');
+const subtractCardsBtn = document.getElementById('subtractCardsBtn');
+const addCardsBtn = document.getElementById('addCardsBtn');
+const numCardsText = document.getElementById('numCards');
+const currentScoreText = document.getElementById('currentScore');
+const startBestScoreText = document.getElementById('startBestScore');
+const gameBestScoreText = document.getElementById('gameBestScore');
 
-let cardPatterns = shuffle(createPatterns(numPairs));
-createCards(cardPatterns);
-
+let bestScores = {};
+let bestScore;
+let numPairs = 8; // Default to 16 cards
+let score = 0;
 let cardsRevealed = 0;
 let cardsMatched = 0;
-let score = 0;
 let firstCard;
 let firstPattern;
 
+document.addEventListener('DOMContentLoaded', function () {
+  loadStartPage();
+});
+
 function loadStartPage() {
-  let playBtn = document.querySelector('#startPage .play-btn');
+  loadBestScore();
+  numCardsText.innerText = numPairs * 2;
+  currentScoreText.innerText = score;
   playBtn.addEventListener('click', startGame);
+  settingsBtn.addEventListener('click', toggleSettings);
+  subtractCardsBtn.addEventListener('click', decreasenumCards);
+  addCardsBtn.addEventListener('click', increasenumCards);
+}
+
+function loadBestScore() {
+  if (localStorage.getItem('leaderboard')) {
+    bestScores = JSON.parse(localStorage.getItem('leaderboard'));
+  }
+
+  updateBestScore();
+}
+
+function updateBestScore() {
+  if (bestScores[numPairs * 2]) {
+    bestScore = bestScores[numPairs * 2];
+  } else {
+    bestScore = undefined;
+  }
+
+  startBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
+  gameBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
+}
+
+function incrementScore() {
+  score++;
+  currentScoreText.innerText = score;
+}
+
+function decreasenumCards(evt) {
+  let prevnumCards = parseInt(numCardsText.innerText);
+  numCardsText.innerText = Math.max(prevnumCards - 4, MIN_CARDS);
+  numPairs = parseInt(numCardsText.innerText) / 2;
+  updateBestScore();
+}
+
+function increasenumCards(evt) {
+  let prevnumCards = parseInt(numCardsText.innerText);
+  numCardsText.innerText = Math.min(prevnumCards + 4, MAX_CARDS);
+  numPairs = parseInt(numCardsText.innerText) / 2;
+  updateBestScore();
+}
+
+function toggleSettings(evt) {
+  settingsMenu.classList.toggle('menu-hidden');
+  settingsBtn.classList.toggle('settings-spin');
 }
 
 function startGame() {
   let startPage = document.getElementById('startPage');
   startPage.style.visibility = 'hidden';
+  let cardPatterns = shuffle(createPatterns(numPairs));
+  createCards(cardPatterns);
 }
 
 /** Randomly generate gradient patterns for the cards (each will appear twice):
@@ -43,16 +104,16 @@ function createPatterns(num) {
   // Generate COLORS_PER_PATTERN number of random colors
   // Generate a string with the gradient direction and colors for the set
   while (patternSet.size < num) {
-    let patternStr = Math.floor(Math.random()*360) + 'deg';
+    let patternStr = Math.floor(Math.random() * 360) + 'deg';
     for (let i = 0; i < COLORS_PER_PATTERN; i++) {
-      patternStr += ', #' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+      patternStr += ', #' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     }
     patternSet.add(patternStr);
   }
 
   // Duplicate items in the set and return as an array
-  return Array.from(patternSet).reduce(function(acc, next) {
-    return acc.concat([next, next])
+  return Array.from(patternSet).reduce(function (acc, next) {
+    return acc.concat([next, next]);
   }, []);
 }
 
@@ -94,6 +155,7 @@ function createCards(cardPatterns) {
     let newCardFront = document.createElement('div');
     newCardFront.classList.add('card-face');
     newCardFront.classList.add('card-front');
+    newCardFront.innerHTML = '<i class="fa-solid fa-star"></i>';
 
     let newCardBack = document.createElement('div');
     newCardBack.classList.add('card-face');
@@ -129,9 +191,20 @@ function decrementRevealed(evt) {
 
 function checkForWin(evt) {
   evt.target.removeEventListener('transitionend', checkForWin);
-  if (cardsMatched === cardPatterns.length) {
-    alert('you win');
+  if (cardsMatched === numPairs * 2) {
+    alert(`you win! your score is ${score}`);
+
+    if (bestScore === undefined || (bestScore && score < bestScore)) {
+      bestScore = score;
+      alert('new high score');
+      storeBestScore();
+    }
   }
+}
+
+function storeBestScore() {
+  bestScores[numPairs * 2] = bestScore;
+  localStorage.setItem('leaderboard', JSON.stringify(bestScores));
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
@@ -168,6 +241,7 @@ function handleCardClick(evt) {
   // If it is the second card, compare its color to firstPattern and decide
   // if the cards should stay face-up or be flipped face-down
   else if (cardsRevealed === 2) {
+    incrementScore();
     if (clickedCardBack.style.backgroundImage === firstPattern) {
       cardsRevealed -= 2;
       cardsMatched += 2;

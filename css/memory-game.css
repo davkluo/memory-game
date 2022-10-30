@@ -5,6 +5,12 @@
   padding: 0;
 }
 
+body {
+  background-color: white;
+}
+
+
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -15,7 +21,7 @@
   align-items: center;
   background-color: blanchedalmond;
   z-index: 1;
-  font-family: 'Cabin', sans-serif;
+  gap: 30px;
 }
 
 .game-title {
@@ -23,14 +29,27 @@
   font-size: 8rem;
   text-align: center;
   color: white;
-  -webkit-text-stroke: 1px rgb(204, 227, 236);
+  -webkit-text-stroke: 5px rgb(204, 227, 236);
   cursor: default;
 }
 
-.best-score {
+.best-score, .settings-menu {
   font-family: 'Paytone One', sans-serif;
-  font-size: 1.5rem;
   color: rgb(204, 227, 236);
+  width: auto;
+  height: 2.5rem;
+  background-color: rgb(255, 255, 255, .5);
+  border-radius: 1.25rem;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.best-score {
+  color: rgb(204, 227, 236);
+  font-size: 1.75rem;
 }
 
 #startPageControls {
@@ -38,21 +57,49 @@
   align-items: center;
   gap: 20px;
   font-size: 2rem;
-  perspective: 100px;
 }
 
-/* #startPageControls label {
-  color: white;
-  background-color: rgb(204, 227, 236);
-} */
+.settings-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  transition: transform .75s, opacity 1s;
+}
 
-/* .menu input {
+.settings-menu.menu-hidden {
+  transform: translate(0,  -50%);
+  opacity: 0;
+  transition: transform .75s, opacity .5s;
+}
+
+#numCardsLabel {
   display: inline-flex;
-  width: 60px;
-  text-align: center;
-  border: none;
-  border-radius: 10px;
-} */
+  align-items: center;
+  justify-content: center;
+  width: auto;
+}
+
+#numCards {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  color: rgb(204, 227, 236);
+}
+
+#subtractCardsBtn, #addCardsBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.settings-menu i {
+  color:rgb(204, 227, 236);
+  font-size: 0.8em;
+}
 
 #startPageControls button {
   display: inline-flex;
@@ -65,15 +112,46 @@
   background-color: rgb(204, 227, 236);
   border: none;
   color: white;
-  transition: box-shadow .25s ease;
+}
+
+#playBtn {
+  transition: box-shadow .25s;
+}
+
+#settingsBtn {
+  transition: box-shadow .25s, transform .75s;
+}
+
+#settingsBtn.settings-spin {
+  transform: rotate(360deg);
+  transform-origin: center;
 }
 
 #startPageControls button:hover {
-  box-shadow: 2px 2px 20px rgb(215, 198, 173);
+  background-color: rgb(204, 227, 236, .75);
+  box-shadow: 0 0 6px rgb(215, 198, 173);
+}
+
+#subtractCardsBtn:hover i, #addCardsBtn:hover i {
+  color: rgb(204, 227, 236, .75);
 }
 
 #startPageControls .play-btn-icon {
   transform: translate(8%, 0);
+}
+
+#gameWrapper {
+  display: flex;
+  min-height: 100vh;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#game {
+  display: inline-grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .card-space {
@@ -97,11 +175,23 @@
   height: 100%;
   width: 100%;
   backface-visibility: hidden;
-  border: 3px solid black;
   border-radius: 20px;
+  border: 6px solid white;
+
+  box-shadow: 0 0 5px rgb(210, 210, 210);
 }
 
 .card-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(204, 227, 236);
+  color: white;
+  font-size: 1.25rem;
+}
+
+.card-front:hover {
+  background-color: rgb(204, 227, 236, .75);
 }
 
 .card-back {

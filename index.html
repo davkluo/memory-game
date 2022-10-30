@@ -14,23 +14,44 @@
 
 <body>
   <div class='menu' id='startPage'>
-    <h1 class='game-title'>memory match</h1>
+    <div class='game-title'>memory match</div>
 
-    <span class='best-score'>BEST SCORE:</span>
+    <div class='best-score'>BEST SCORE:
+      &nbsp;
+      <div id='startBestScore'></div>
+    </div>
 
     <div id='startPageControls'>
-      <!-- <label for='numPairsInput'>Pairs:</label>
-      <input id='numPairsInput' type='number' value='8'> -->
-      <button class='play-btn'>
+      <button id='playBtn'>
         <i class='play-btn-icon fa-solid fa-play'></i>
       </button>
-      <button class='settings-btn'>
+      <button id='settingsBtn'>
         <i class='fa-solid fa-gear'></i>
       </button>
     </div>
+
+    <div class='settings-menu menu-hidden'>
+      <div id='numCardsLabel'>Cards:</div>
+      <div id='subtractCardsBtn'>
+        <i class="fa-solid fa-circle-minus"></i>
+      </div>
+      <div id='numCards'></div>
+      <div id='addCardsBtn'>
+        <i class="fa-solid fa-circle-plus"></i>
+      </div>
+    </div>
+
   </div>
 
-  <div id='game'></div>
+  <div id='gameWrapper'>
+    <div>
+      Best Score:
+      <div id='gameBestScore'></div>
+      Current Score:
+      <div id='currentScore'></div>
+    </div>
+    <div id='game'></div>
+  </div>
 
   <script src='js/memory-game.js'></script>
 
