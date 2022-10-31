@@ -3,6 +3,8 @@
 
 <head>
   <meta charset='UTF-8' />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Memory Game!</title>
   <link href='css/normalize.css' rel='stylesheet'>
   <link href='css/memory-game.css' rel='stylesheet' />
@@ -13,14 +15,12 @@
 </head>
 
 <body>
-  <div class='menu' id='startPage'>
-    <div class='game-title'>memory match</div>
-
-    <div class='best-score'>BEST SCORE:
+  <div id='startPage'>
+    <div class='cursive-heading'>memory match</div>
+    <div class='info-text' id='bestScoreLabel'>BEST SCORE:
       &nbsp;
       <div id='startBestScore'></div>
     </div>
-
     <div id='startPageControls'>
       <button id='playBtn'>
         <i class='play-btn-icon fa-solid fa-play'></i>
@@ -29,8 +29,7 @@
         <i class='fa-solid fa-gear'></i>
       </button>
     </div>
-
-    <div class='settings-menu menu-hidden'>
+    <div class='info-text menu-hidden' id='settingsMenu'>
       <div id='numCardsLabel'>CARDS:</div>
       <div class='subtract-cards' id='subtractCardsBtn'>
         <i class='subtract-cards fa-solid fa-circle-minus'></i>
@@ -40,12 +39,11 @@
         <i class='add-cards fa-solid fa-circle-plus'></i>
       </div>
     </div>
-
   </div>
 
   <div id='winScreen'>
-    <div class='game-title'>You Win!</div>
-    <div id='winMsg'></div>
+    <div class='cursive-heading'>You Win!</div>
+    <div class='info-text' id='winMsg'></div>
     <button id='replayBtn'>
       PLAY AGAIN
       <i class="fa-solid fa-rotate-right"></i>
@@ -54,17 +52,20 @@
 
   <div id='gameWrapper'>
     <!-- <div class='game-title'>memory match</div> -->
-    <div class='best-score'>
-      Best Score:
-      <div id='gameBestScore'></div>
-      &nbsp;
-      Current Score:
-      <div id='currentScore'></div>
+    <div class='info-text' id='gameScoreBoard'>
+      <div class='score-text-wrapper'>
+        Best Score:
+        &nbsp;
+        <div id='gameBestScore'></div>
+      </div>
+      <div class='score-text-wrapper'>
+        Current Score:
+        &nbsp;
+        <div id='currentScore'></div>
+      </div>
     </div>
     <div id='game'></div>
   </div>
-
-
 
   <script src='js/memory-game.js'></script>
 

@@ -10,7 +10,7 @@ const MAX_CARDS = 100;
 const startBestScoreText = document.getElementById('startBestScore');
 const playBtn = document.getElementById('playBtn');
 const settingsBtn = document.getElementById('settingsBtn');
-const settingsMenu = document.querySelector('.settings-menu');
+const settingsMenu = document.getElementById('settingsMenu');
 const subtractCardsBtn = document.getElementById('subtractCardsBtn');
 const addCardsBtn = document.getElementById('addCardsBtn');
 const numCardsText = document.getElementById('numCards');
@@ -37,15 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
   loadStartPage();
 });
 
-function loadStartPage() {
-  numCardsText.innerText = numPairs * 2;
-  currentScoreText.innerText = score;
-  playBtn.addEventListener('click', startGame);
-  settingsBtn.addEventListener('click', toggleSettings);
-  subtractCardsBtn.addEventListener('click', changeNumCards);
-  addCardsBtn.addEventListener('click', changeNumCards);
-}
-
 function loadBestScore() {
   if (localStorage.getItem('leaderboard')) {
     bestScores = JSON.parse(localStorage.getItem('leaderboard'));
@@ -61,6 +52,15 @@ function updateBestScore() {
   }
   startBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
   gameBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
+}
+
+function loadStartPage() {
+  numCardsText.innerText = numPairs * 2;
+  currentScoreText.innerText = score;
+  playBtn.addEventListener('click', startGame);
+  settingsBtn.addEventListener('click', toggleSettings);
+  subtractCardsBtn.addEventListener('click', changeNumCards);
+  addCardsBtn.addEventListener('click', changeNumCards);
 }
 
 function updateScore(num) {
@@ -88,7 +88,8 @@ function toggleSettings(evt) {
 
 function startGame() {
   let startPage = document.getElementById('startPage');
-  startPage.style.visibility = 'hidden';
+  startPage.classList.add('hidden');
+  playBtn.disabled = true;
   let cardPatterns = shuffle(createPatterns(numPairs));
   createCards(cardPatterns);
 }
@@ -193,12 +194,12 @@ function decrementRevealed(evt) {
 function checkForWin(evt) {
   evt.target.removeEventListener('transitionend', checkForWin);
   if (cardsMatched === numPairs * 2) {
-    alert(`you win! your score is ${score}`);
-
     if (bestScore === undefined || (bestScore && score < bestScore)) {
       bestScore = score;
-      alert('new high score');
       storeBestScore();
+      winMsgText.innerText = `You got a new best score of ${score}!`;
+    } else {
+      winMsgText.innerText = `You got a score of ${score}!`;
     }
 
     //Show win screen
@@ -207,7 +208,7 @@ function checkForWin(evt) {
 }
 
 function displayWinScreen() {
-  winScreen.style.visibility = 'visible';
+  winScreen.classList.add('show');
   replayBtn.addEventListener('click', restartGame);
 }
 
@@ -221,7 +222,7 @@ function restartGame() {
     gameBoard.lastChild.remove();
   }
 
-  winScreen.style.visibility = 'hidden';
+  winScreen.classList.remove('show');
 
   loadBestScore();
   updateScore(0);

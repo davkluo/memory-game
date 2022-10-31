@@ -9,7 +9,7 @@ body {
   background-color: blanchedalmond;
 }
 
-.menu {
+#startPage {
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -19,56 +19,53 @@ body {
   align-items: center;
   background-color: blanchedalmond;
   z-index: 1;
-  gap: 30px;
   cursor: default;
+  transition: visibility 1s, opacity 1s linear;
 }
 
-.game-title {
+#startPage.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.cursive-heading {
   font-family: 'Pacifico', cursive;
   font-size: 8rem;
   text-align: center;
   color: white;
-  -webkit-text-stroke: 5px rgb(204, 227, 236);
+  -webkit-text-stroke: .3rem rgb(204, 227, 236);
   cursor: default;
+  margin-bottom: 3rem;
 }
 
-
-.best-score, .settings-menu {
+.info-text {
   font-family: 'Paytone One', sans-serif;
   color: rgb(204, 227, 236);
   width: auto;
   height: 2.5rem;
-  background-color: rgb(255, 255, 255, .5);
+  background-color: rgb(255, 255, 255, .6);
   border-radius: 1.25rem;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.best-score {
-  color: rgb(204, 227, 236);
+  margin-bottom: 1rem;
   font-size: 1.75rem;
 }
 
-#startPageControls {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  font-size: 2rem;
-}
-
-.settings-menu {
+#settingsMenu {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   font-size: 1.5rem;
   transition: transform .75s, opacity 1s;
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
 
-.settings-menu.menu-hidden {
+#settingsMenu.menu-hidden {
   transform: translate(0,  -50%);
   opacity: 0;
   transition: transform .75s, opacity .5s;
@@ -96,17 +93,24 @@ body {
   height: auto;
 }
 
-.settings-menu i {
+#settingsMenu i {
   color:rgb(204, 227, 236);
   font-size: 0.8em;
+}
+
+#startPageControls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 2rem;
 }
 
 #startPageControls button {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 50%;
   font-size: 1.75rem;
   background-color: rgb(204, 227, 236);
@@ -118,6 +122,10 @@ body {
   transition: box-shadow .25s;
 }
 
+#playBtn .play-btn-icon {
+  transform: translate(8%, 0);
+}
+
 #settingsBtn {
   transition: box-shadow .25s, transform .75s;
 }
@@ -125,83 +133,6 @@ body {
 #settingsBtn.settings-spin {
   transform: rotate(360deg);
   transform-origin: center;
-}
-
-#startPageControls button:hover {
-  background-color: rgb(204, 227, 236, .75);
-  box-shadow: 0 0 6px rgb(215, 198, 173);
-}
-
-#subtractCardsBtn:hover i, #addCardsBtn:hover i {
-  color: rgb(204, 227, 236, .75);
-}
-
-#startPageControls .play-btn-icon {
-  transform: translate(8%, 0);
-}
-
-#gameWrapper {
-  display: flex;
-  min-height: 100vh;
-  height: auto;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#game {
-  display: inline-grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.card-space {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  perspective: 200px;
-  margin: 15px;
-}
-
-.card {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: transform .5s;
-  transform-style: preserve-3d;
-  background-color: white;
-  border-radius: 20px;
-}
-
-.card-face {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  backface-visibility: hidden;
-  border-radius: inherit;
-  border: 6px solid white;
-  box-shadow: 0 0 5px rgb(215, 198, 173);
-  box-sizing: border-box;
-}
-
-.card-front {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(204, 227, 236);
-  color: white;
-  font-size: 1.25rem;
-}
-
-.card-front:hover {
-  background-color: rgb(204, 227, 236, .75);
-}
-
-.card-back {
-  transform: rotateY(180deg);
-}
-
-.card.flipped-over {
-  transform: rotateY(180deg);
 }
 
 #winScreen {
@@ -214,5 +145,166 @@ body {
   position: fixed;
   z-index: 1;
   visibility: hidden;
+  opacity: 0;
   background-color: blanchedalmond;
+  cursor: default;
+  transition: visibility 1s, opacity 1s linear;
+}
+
+#winScreen.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+#replayBtn {
+  font-family: 'Paytone One', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  font-size: 1.75rem;
+  background-color: rgb(204, 227, 236);
+  border: none;
+  color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+}
+
+#gameWrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+#gameScoreBoard {
+  gap: 2.5rem;
+}
+
+.score-text-wrapper {
+  display: flex;
+}
+
+#game {
+  display: inline-grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.card-space {
+  display: inline-block;
+  width: 6.5rem;
+  height: 6.5rem;
+  perspective: 13rem;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform .5s;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  background-color: white;
+  border-radius: 20%;
+}
+
+.card-face {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  border-radius: inherit;
+  border: .4rem solid white;
+  box-shadow: 0 0 .4rem rgb(215, 198, 173);
+  box-sizing: border-box;
+}
+
+.card-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(204, 227, 236);
+  color: white;
+  font-size: 1.25rem;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card.flipped-over {
+  transform: rotateY(180deg);
+}
+
+#subtractCardsBtn:hover i, #addCardsBtn:hover i {
+  color: rgb(204, 227, 236, .75);
+}
+
+#startPageControls button:hover, #replayBtn:hover {
+  background-color: rgb(204, 227, 236, .75);
+  box-shadow: 0 0 .4rem rgb(215, 198, 173);
+}
+
+.card-front:hover {
+  background-color: rgb(204, 227, 236, .75);
+}
+
+@media screen and (max-width: 768px) {
+  #startPage .cursive-heading {
+    font-size: 5.5rem;
+    -webkit-text-stroke: .2rem rgb(204, 227, 236);
+    margin-bottom: 1.75rem;
+  }
+
+  #bestScoreLabel {
+    font-size: 1.5rem;
+  }
+
+  #settingsMenu {
+    font-size: 1.25rem;
+  }
+
+  #numCards {
+    width: 2.25rem;
+  }
+
+  #winScreen .cursive-heading {
+    font-size: 4.5rem;
+    -webkit-text-stroke: .2rem rgb(204, 227, 236);
+    margin-bottom: 1.75rem;
+  }
+
+  #winMsg {
+    font-size: 1.25rem;
+  }
+
+  #gameWrapper .info-text {
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  #game {
+    gap: 1rem;
+  }
+
+  .card-space {
+    width: 4.25rem;
+    height: 4.25rem;
+  }
+
+  .card-face {
+    border: .3rem solid white;
+  }
+
+  .card-front {
+    font-size: 1rem;
+  }
 }
