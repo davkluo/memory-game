@@ -1,14 +1,15 @@
-/* you can add to or change this. */
-
+/* Universal margin and padding reset */
 * {
   margin: 0;
   padding: 0;
 }
 
+/* Body style */
 body {
   background-color: blanchedalmond;
 }
 
+/* Start page style */
 #startPage {
   display: flex;
   flex-direction: column;
@@ -23,11 +24,13 @@ body {
   transition: visibility 1s, opacity 1s linear;
 }
 
+/* Hides start page on game start */
 #startPage.hidden {
   visibility: hidden;
   opacity: 0;
 }
 
+/* Heading style */
 .cursive-heading {
   font-family: 'Pacifico', cursive;
   font-size: 8rem;
@@ -38,6 +41,7 @@ body {
   margin-bottom: 3rem;
 }
 
+/* Label text style */
 .info-text {
   font-family: 'Paytone One', sans-serif;
   color: rgb(204, 227, 236);
@@ -54,6 +58,7 @@ body {
   font-size: 1.75rem;
 }
 
+/* Settings menu style */
 #settingsMenu {
   display: flex;
   align-items: center;
@@ -65,12 +70,14 @@ body {
   margin-bottom: 0;
 }
 
+/* Hides settings menu */
 #settingsMenu.menu-hidden {
   transform: translate(0,  -50%);
   opacity: 0;
   transition: transform .75s, opacity .5s;
 }
 
+/* numCardsLabel style */
 #numCardsLabel {
   display: inline-flex;
   align-items: center;
@@ -78,6 +85,7 @@ body {
   width: auto;
 }
 
+/* numCards style */
 #numCards {
   display: inline-flex;
   align-items: center;
@@ -86,6 +94,7 @@ body {
   color: rgb(204, 227, 236);
 }
 
+/* Add/subtract cards button style */
 #subtractCardsBtn, #addCardsBtn {
   display: inline-flex;
   justify-content: center;
@@ -93,11 +102,13 @@ body {
   height: auto;
 }
 
+/* Settings menu font awesome icon style */
 #settingsMenu i {
   color:rgb(204, 227, 236);
   font-size: 0.8em;
 }
 
+/* Start page button wrapper */
 #startPageControls {
   display: flex;
   align-items: center;
@@ -105,6 +116,7 @@ body {
   font-size: 2rem;
 }
 
+/* Start page button style */
 #startPageControls button {
   display: inline-flex;
   justify-content: center;
@@ -118,23 +130,28 @@ body {
   color: white;
 }
 
+/* Play transition effect */
 #playBtn {
   transition: box-shadow .25s;
 }
 
+/* Translate play button icon so it's centered */
 #playBtn .play-btn-icon {
   transform: translate(8%, 0);
 }
 
+/* Settings button transition effect */
 #settingsBtn {
   transition: box-shadow .25s, transform .75s;
 }
 
+/* Settings button spin effect */
 #settingsBtn.settings-spin {
   transform: rotate(360deg);
   transform-origin: center;
 }
 
+/* Win screen style */
 #winScreen {
   display: flex;
   flex-direction: column;
@@ -151,11 +168,13 @@ body {
   transition: visibility 1s, opacity 1s linear;
 }
 
+/* Show win screen */
 #winScreen.show {
   visibility: visible;
   opacity: 1;
 }
 
+/* Replay button style */
 #replayBtn {
   font-family: 'Paytone One', sans-serif;
   display: flex;
@@ -172,6 +191,7 @@ body {
   border-radius: 1.25rem;
 }
 
+/* Game container */
 #gameWrapper {
   display: flex;
   min-height: 100vh;
@@ -182,14 +202,17 @@ body {
   box-sizing: border-box;
 }
 
+/* Score container */
 #gameScoreBoard {
   gap: 2.5rem;
 }
 
+/* Score text wrapper */
 .score-text-wrapper {
   display: flex;
 }
 
+/* Game with grid of cards */
 #game {
   display: inline-grid;
   grid-template-columns: repeat(4, 1fr);
@@ -197,6 +220,7 @@ body {
   margin-top: 1rem;
 }
 
+/* Space for flipping card */
 .card-space {
   display: inline-block;
   width: 6.5rem;
@@ -204,6 +228,7 @@ body {
   perspective: 13rem;
 }
 
+/* Card style */
 .card {
   width: 100%;
   height: 100%;
@@ -215,6 +240,7 @@ body {
   border-radius: 20%;
 }
 
+/* Card face style */
 .card-face {
   position: absolute;
   height: 100%;
@@ -227,6 +253,7 @@ body {
   box-sizing: border-box;
 }
 
+/* Card front face */
 .card-front {
   display: flex;
   justify-content: center;
@@ -236,27 +263,33 @@ body {
   font-size: 1.25rem;
 }
 
+/* Card back face */
 .card-back {
   transform: rotateY(180deg);
 }
 
+/* Flips card over */
 .card.flipped-over {
   transform: rotateY(180deg);
 }
 
+/* Settings menu button hover effect */
 #subtractCardsBtn:hover i, #addCardsBtn:hover i {
   color: rgb(204, 227, 236, .75);
 }
 
+/* Start and win screen button hover effect */
 #startPageControls button:hover, #replayBtn:hover {
   background-color: rgb(204, 227, 236, .75);
   box-shadow: 0 0 .4rem rgb(215, 198, 173);
 }
 
+/* Card hover effect */
 .card-front:hover {
   background-color: rgb(204, 227, 236, .75);
 }
 
+/* Rules for smaller screens */
 @media screen and (max-width: 768px) {
   #startPage .cursive-heading {
     font-size: 5.5rem;

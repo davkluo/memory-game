@@ -7,6 +7,7 @@ const COLORS_PER_PATTERN = 2;
 const MIN_CARDS = 8;
 const MAX_CARDS = 100;
 
+const startPage = document.getElementById('startPage');
 const startBestScoreText = document.getElementById('startBestScore');
 const playBtn = document.getElementById('playBtn');
 const settingsBtn = document.getElementById('settingsBtn');
@@ -25,7 +26,7 @@ const replayBtn = document.getElementById('replayBtn');
 
 let bestScores = {};
 let bestScore;
-let numPairs = 8; // Default to 16 cards
+let numPairs = 8; // Default is 16 cards
 let score = 0;
 let cardsRevealed = 0;
 let cardsMatched = 0;
@@ -37,12 +38,19 @@ document.addEventListener('DOMContentLoaded', function () {
   loadStartPage();
 });
 
+/** Load localStorage data if it exists and update the best score */
+
 function loadBestScore() {
   if (localStorage.getItem('leaderboard')) {
     bestScores = JSON.parse(localStorage.getItem('leaderboard'));
   }
   updateBestScore();
 }
+
+/** Update the best score fields based on the localStorage data if available
+ *
+ * Fills fields with an em-dash if no best score exists
+ */
 
 function updateBestScore() {
   if (bestScores[numPairs * 2]) {
@@ -54,6 +62,8 @@ function updateBestScore() {
   gameBestScoreText.innerHTML = bestScore ? bestScore : '&mdash;';
 }
 
+/** Populate text fields on the start page and add event listeners to elements */
+
 function loadStartPage() {
   numCardsText.innerText = numPairs * 2;
   currentScoreText.innerText = score;
@@ -63,10 +73,16 @@ function loadStartPage() {
   addCardsBtn.addEventListener('click', changeNumCards);
 }
 
-function updateScore(num) {
-  score = num;
-  currentScoreText.innerText = score;
+/** Handler for settings button to show and hide the settings menu */
+
+function toggleSettings(evt) {
+  settingsMenu.classList.toggle('menu-hidden');
+  settingsBtn.classList.toggle('settings-spin');
 }
+
+/** Handler for add/subtract cards buttons to change the number of cards in the game
+ * Calls updateBestScore() to update the best score based on the number of cards
+ */
 
 function changeNumCards(evt) {
   let prevNumCards = parseInt(numCardsText.innerText);
@@ -81,15 +97,12 @@ function changeNumCards(evt) {
   updateBestScore();
 }
 
-function toggleSettings(evt) {
-  settingsMenu.classList.toggle('menu-hidden');
-  settingsBtn.classList.toggle('settings-spin');
-}
+/** Start the game by hiding the start page and creating cards */
 
 function startGame() {
-  let startPage = document.getElementById('startPage');
-  startPage.classList.add('hidden');
+  // Disable play button so event can only be triggered once
   playBtn.disabled = true;
+  startPage.classList.add('hidden');
   let cardPatterns = shuffle(createPatterns(numPairs));
   createCards(cardPatterns);
 }
@@ -172,69 +185,6 @@ function createCards(cardPatterns) {
   }
 }
 
-/** Flip a card face-up. */
-
-function flipCard(card) {
-  cardsRevealed++;
-  card.classList.add('flipped-over');
-}
-
-/** Flip a card face-down. */
-
-function unFlipCard(card) {
-  card.classList.remove('flipped-over');
-  card.addEventListener('transitionend', decrementRevealed);
-}
-
-function decrementRevealed(evt) {
-  evt.target.removeEventListener('transitionend', decrementRevealed);
-  cardsRevealed--;
-}
-
-function checkForWin(evt) {
-  evt.target.removeEventListener('transitionend', checkForWin);
-  if (cardsMatched === numPairs * 2) {
-    if (bestScore === undefined || (bestScore && score < bestScore)) {
-      bestScore = score;
-      storeBestScore();
-      winMsgText.innerText = `You got a new best score of ${score}!`;
-    } else {
-      winMsgText.innerText = `You got a score of ${score}!`;
-    }
-
-    //Show win screen
-    displayWinScreen();
-  }
-}
-
-function displayWinScreen() {
-  winScreen.classList.add('show');
-  replayBtn.addEventListener('click', restartGame);
-}
-
-function storeBestScore() {
-  bestScores[numPairs * 2] = bestScore;
-  localStorage.setItem('leaderboard', JSON.stringify(bestScores));
-}
-
-function restartGame() {
-  while (gameBoard.firstChild) {
-    gameBoard.lastChild.remove();
-  }
-
-  winScreen.classList.remove('show');
-
-  loadBestScore();
-  updateScore(0);
-  cardsRevealed = 0;
-  cardsMatched = 0;
-  firstCard = undefined;
-  firstPattern = undefined;
-
-  let cardPatterns = shuffle(createPatterns(numPairs));
-  createCards(cardPatterns);
-}
-
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 function handleCardClick(evt) {
@@ -283,4 +233,88 @@ function handleCardClick(evt) {
     firstCard = undefined;
     firstPattern = undefined;
   }
+}
+
+/** Flip a card face-up. */
+
+function flipCard(card) {
+  cardsRevealed++;
+  card.classList.add('flipped-over');
+}
+
+/** Flip a card face-down. */
+
+function unFlipCard(card) {
+  card.classList.remove('flipped-over');
+  card.addEventListener('transitionend', decrementRevealed);
+}
+
+/** Decrement the number of cards revealed */
+
+function decrementRevealed(evt) {
+  evt.target.removeEventListener('transitionend', decrementRevealed);
+  cardsRevealed--;
+}
+
+/** Update the current score */
+
+function updateScore(num) {
+  score = num;
+  currentScoreText.innerText = score;
+}
+
+/** Check current state for a win condition and trigger win screen if met */
+
+function checkForWin(evt) {
+  evt.target.removeEventListener('transitionend', checkForWin);
+  if (cardsMatched === numPairs * 2) {
+    if (bestScore === undefined || (bestScore && score < bestScore)) {
+      bestScore = score;
+      storeBestScore();
+      winMsgText.innerText = `You got a new best score of ${score}!`;
+    } else {
+      winMsgText.innerText = `You got a score of ${score}!`;
+    }
+
+    //Show win screen
+    displayWinScreen();
+  }
+}
+
+/** Store a new best score in localStorage */
+
+function storeBestScore() {
+  bestScores[numPairs * 2] = bestScore;
+  localStorage.setItem('leaderboard', JSON.stringify(bestScores));
+}
+
+/** Display the win screen with active replay button */
+
+function displayWinScreen() {
+  winScreen.classList.add('show');
+  replayBtn.addEventListener('click', restartGame);
+}
+
+/** Restart the game with the same settings */
+
+function restartGame() {
+  // Clear existing board
+  while (gameBoard.firstChild) {
+    gameBoard.lastChild.remove();
+  }
+
+  // Hide the win screen
+  winScreen.classList.remove('show');
+
+  // Update best score; reset variables
+  loadBestScore();
+  updateScore(0);
+  cardsRevealed = 0;
+  cardsMatched = 0;
+  firstCard = undefined;
+  firstPattern = undefined;
+
+  // Create a new board
+  let cardPatterns = shuffle(createPatterns(numPairs));
+  createCards(cardPatterns);
 }
